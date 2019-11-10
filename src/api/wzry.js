@@ -1,4 +1,3 @@
-const fs = require('querystring')
 const { api } = require('../utils')
 
 const url = {
