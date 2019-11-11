@@ -1,7 +1,9 @@
+const iconvLite = require('iconv-lite')
 const { api } = require('../utils')
 
 const url = {
-  wzryNews: 'https://apps.game.qq.com/wmp/v3.1/'
+  wzryNews: 'https://apps.game.qq.com/wmp/v3.1/',
+  wzryNewInfo: 'https://pvp.qq.com/m/m201706/coming/index.htm'
 }
 
 const wzry = {
@@ -25,6 +27,11 @@ const wzry = {
     }
     const data = await api.get(url.wzryNews, reqData, config)
     return data.status === 0 ? data.msg.result : []
+  },
+  // 王者荣耀新英雄、新皮肤信息
+  async getWzryNewInfo () {
+    const data = await api.get(url.wzryNewInfo, null, { responseType: 'arraybuffer' })
+    return iconvLite.decode(data, 'gbk')
   }
 }
 
