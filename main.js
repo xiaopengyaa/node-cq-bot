@@ -2,6 +2,7 @@ const { CQWebSocket } = require('cq-websocket')
 const bot = new CQWebSocket()
 const scheduleJob = require('./src/js/schedule')
 const groupId = 623084193
+const userId = 857763476
 
 // ws链接监听
 bot
@@ -20,13 +21,20 @@ bot
     // 定时任务开始
     scheduleJob.start(list => {
       list.forEach(msg => {
-        // 发送推送
+        // 发送群推送
         bot('send_group_msg', {
           group_id: groupId,
           message: [msg]
         })
           .then(console.log)
           .catch(console.error)
+        // 发送私聊推送
+        // bot('send_private_msg', {
+        //   user_id: userId,
+        //   message: [msg]
+        // })
+        //   .then(console.log)
+        //   .catch(console.error)
       })
     })
   })

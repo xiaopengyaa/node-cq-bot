@@ -1,15 +1,21 @@
 const schedule = require('node-schedule')
 const { getNews } = require('./news')
+const { getOneList } = require('./one')
 
 // 定时任务名字
 const scheduleName = {
-  news: 'news'
+  news: 'news',
+  one: 'one'
 }
 // 定时任务
 const scheduleObj = {
   [scheduleName.news]: {
     rule: '0 0 * * * *', // 1 time/h
     func: getNews
+  },
+  [scheduleName.one]: {
+    rule: '0 0 8 * * *', // 每天早上8点
+    func: getOneList
   }
 }
 // 初始化定时任务
