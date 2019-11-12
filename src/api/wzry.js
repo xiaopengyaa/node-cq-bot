@@ -26,7 +26,7 @@ const wzry = {
       }
     }
     const data = await api.get(url.wzryNews, reqData, config)
-    return data.status === 0 ? data.msg.result : []
+    return data && data.status === 0 ? data.msg.result : []
   },
   // 王者荣耀新英雄、新皮肤信息
   async getWzryNewInfo () {

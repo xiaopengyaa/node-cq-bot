@@ -1,6 +1,7 @@
 const { CQWebSocket } = require('cq-websocket')
 const bot = new CQWebSocket()
 const scheduleJob = require('./src/js/schedule')
+const { groupReplyMsg } = require('./src/js/reply')
 const groupId = 623084193
 const userId = 857763476
 
@@ -28,13 +29,6 @@ bot
         })
           .then(console.log)
           .catch(console.error)
-        // 发送私聊推送
-        // bot('send_private_msg', {
-        //   user_id: userId,
-        //   message: [msg]
-        // })
-        //   .then(console.log)
-        //   .catch(console.error)
       })
     })
   })
@@ -46,7 +40,21 @@ bot.on('message.private', async (e, context) => {
 })
 bot.on('message.group.@.me', async (e, context) => {
   console.log('监听消息：', context)
-  return ['@我干嘛呀Σ(*ﾟдﾟﾉ)ﾉ']
+  // 获取群验证回复消息
+  const list = await groupReplyMsg(context.message)
+  if (list && list.length > 0) {
+    list.forEach(msg => {
+      // 发送群推送
+      bot('send_group_msg', {
+        group_id: context.group_id,
+        message: [msg]
+      })
+        .then(console.log)
+        .catch(console.error)
+    })
+  } else {
+    return ['@我干嘛呀Σ(*ﾟдﾟﾉ)ﾉ']
+  }
 })
 
 // 开始执行（放最后）

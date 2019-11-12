@@ -25,6 +25,10 @@ const utils = {
         console.log(err)
       }
     }
+  },
+  // 生成随机范围数
+  random (min, max) {
+    return Math.round(Math.random() * (max - min)) + min
   }
 }
 
