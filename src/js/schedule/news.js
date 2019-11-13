@@ -29,8 +29,8 @@ function dealNews(news) {
   let result = []
   news.forEach(item => {
     const diff = moment().diff(item.sCreated, 'days')
-    // 判断2天内的文章是否已发
-    if (diff <= 2 && !newsObj[item.iNewsId]) {
+    // 判断1天内的文章是否已发
+    if (diff <= 1 && !newsObj[item.iNewsId]) {
       const title = `【${item.sAuthor}】${item.sTitle}`
       const url = baseUrl + item.iNewsId
       result.push({
@@ -60,8 +60,8 @@ async function dealNewInfo() {
   const date = $a.find('span').text()
   const diff = moment().diff(date, 'days')
   let result = []
-  // 判断2天内的文章是否已发
-  if (diff <= 2 && !newsObj[date]) {
+  // 判断1天内的文章是否已发
+  if (diff <= 1 && !newsObj[date]) {
     result.push({
       type: 'share',
       data: {
