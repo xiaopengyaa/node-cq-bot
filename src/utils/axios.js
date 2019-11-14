@@ -3,10 +3,10 @@ const { isTimeout } = require('./common')
 
 const defaultConfig = {
   retryCount: 0, // 重放次数
-  retry: 2, // 超时重放总次数
-  retryDelay: 2000, // 重放时间间隔
+  retry: 1, // 超时重放总次数
+  retryDelay: 1000, // 重放时间间隔
 }
-axios.defaults.timeout = 50 // 请求超时时间
+axios.defaults.timeout = 0 // 请求超时时间，默认没有
 
 // 响应拦截
 axios.interceptors.response.use(
@@ -54,8 +54,11 @@ const api = {
         resolve(res.data)
       })
     } catch (err) {
-      // throw new Error(err)
-      return 'abc'
+      if (isTimeout(err)) {
+        return err
+      } else {
+        throw new Error(err)
+      }
     }
   },
   async post(url, data, config) {
@@ -67,7 +70,11 @@ const api = {
         resolve(res.data)
       })
     } catch (err) {
-      throw new Error(err)
+      if (isTimeout(err)) {
+        return err
+      } else {
+        throw new Error(err)
+      }
     }
   }
 }

@@ -1,6 +1,6 @@
 const moment = require('moment')
 const { weather } = require('../../api')
-const { random } = require('../../utils/index')
+const { random, isTimeout } = require('../../utils')
 
 const weekType = {
   '0': '星期日',
@@ -15,10 +15,11 @@ const weekType = {
 const weatherMsg = {
   async getWeatherMsg (city) {
     const resData = await weather.getWeather(city)
-    console.log('data:', resData)
     let text = ''
     // 地址不能带'市|区'
-    if (!resData.data || resData.city !== city) {
+    if (isTimeout(resData)) {
+      text = '请求超时呢，人家累啦，先休息一会儿~'
+    } else if (!resData.data || resData.city !== city) {
       text = '请输入正确的地址，不然臣妾也不知道哇Σ(*ﾟдﾟﾉ)ﾉ'
     } else {
       const todayWea = resData.data[0]
