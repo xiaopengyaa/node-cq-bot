@@ -42,9 +42,11 @@ bot.on('message.group.@.me', async (e, context) => {
   console.log('监听消息：', context)
   // 获取群验证回复消息
   const list = await groupReplyMsg(context.message)
+  console.log('list-msg:', list)
   if (list && list.length > 0) {
     list.forEach(msg => {
       // 发送群推送
+      console.log('群回复ing...')
       bot('send_group_msg', {
         group_id: context.group_id,
         message: [msg]

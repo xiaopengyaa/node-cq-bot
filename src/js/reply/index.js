@@ -18,7 +18,7 @@ const reply = {
       // 校验rule
       const item = list.groupReplyList[i]
       if (item.rule.test(msg)) {
-        console.log('regText:', RegExp.$1)
+        console.log('匹配信息:', RegExp.$1.trim())
         const message = await item.message(RegExp.$1.trim())
         result.push(message)
       }
