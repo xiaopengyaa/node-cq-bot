@@ -15,6 +15,7 @@ const weekType = {
 const weatherMsg = {
   async getWeatherMsg (city) {
     const resData = await weather.getWeather(city)
+    console.log('data:', resData)
     let text = ''
     // 地址不能带'市|区'
     if (!resData.data || resData.city !== city) {

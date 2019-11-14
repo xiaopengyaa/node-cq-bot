@@ -1,4 +1,5 @@
 const axios = require('axios')
+const { isTimeout } = require('./common')
 
 const defaultConfig = {
   retryCount: 0, // 重放次数
@@ -15,7 +16,7 @@ axios.interceptors.response.use(
   },
   err => {
     // 超时处理
-    if (err.code === 'ECONNABORTED' && err.message.includes('timeout')) {
+    if (isTimeout(err)) {
       const config = Object.assign({}, defaultConfig, err.config)
       // 检查重放次数是否超过总次数
       if (defaultConfig.retryCount >= config.retry) {
@@ -53,8 +54,8 @@ const api = {
         resolve(res.data)
       })
     } catch (err) {
-      console.log('bot:', bot)
-      throw new Error(err)
+      // throw new Error(err)
+      return 'abc'
     }
   },
   async post(url, data, config) {
