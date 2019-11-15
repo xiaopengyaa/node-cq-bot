@@ -11,6 +11,15 @@ const weekType = {
   '5': '星期五',
   '6': '星期六',
 }
+const thanksWords = {
+  '0': '【此天气预报由帅帅的群主独家冠名赞助】',
+  '1': '【感谢不懈追求完美的群主对本天气预报的大力支持】',
+  '2': '【此天气预报由温文尔雅、博学多才的群主顶力支持】',
+  '3': '【特别感谢低调、稳重、潇洒、豁达的群主对本天气预报的独家冠名赞助】',
+  '4': '【此天气预报由也许我的肩膀不够宽广、但足以为你遮挡风雨的群主大力支持】',
+  '5': '【感谢文能提笔安天下、武能上马定乾坤的群主对本天气预报提供技术支持】',
+  '6': '【此天气预报由上知天文下知地理、通宵古今学贯中西的群主提供技术支持】'
+}
 
 const weatherMsg = {
   async getWeatherMsg (city) {
@@ -23,8 +32,9 @@ const weatherMsg = {
       text = '请输入正确的地址，不然臣妾也不知道哇Σ(*ﾟдﾟﾉ)ﾉ'
     } else {
       const todayWea = resData.data[0]
-      const idx = random(0, 5)
-      text = `${resData.city}：${moment().format('MM月DD日')} ${weekType[moment().day()]}，${todayWea.wea}，白天气温${todayWea.tem1}，晚上气温${todayWea.tem2}，${idx === 1 ? '运动指数' : todayWea.index[idx].title}：${todayWea.index[idx].desc}【此天气预报由帅帅的群主独家冠名赞助】`
+      const idx = random(0, 5) // 随机指数
+      const randomWordsIdx = random(0, thanksWords.length - 1)
+      text = `${resData.city}：${moment().format('MM月DD日')} ${weekType[moment().day()]}，${todayWea.wea}，白天气温${todayWea.tem1}，晚上气温${todayWea.tem2}，${idx === 1 ? '运动指数' : todayWea.index[idx].title}：${todayWea.index[idx].desc}${thanksWords[randomWordsIdx]}`
     }
     return {
       type: 'text',
