@@ -13,7 +13,7 @@ const weather = {
       appsecret: '2lPP2oBf',
       city
     }
-    const res = await api.get(url.weather, reqData, { timeout: 4000 })
+    const res = await api.get(url.weather, reqData, { timeout: 5000 })
     return res
   }
 }
