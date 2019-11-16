@@ -28,10 +28,12 @@ const weatherMsg = {
     console.log({city, resData})
     console.log('flag1:', !resData.data)
     console.log('flag2:', resData.city !== city)
+    console.log('flag3:', resData.city.trim() !== city)
+    console.log('flag4:', resData.city.trim() != city)
     // 地址不能带'市|区'
     if (isTimeout(resData)) {
       text = '请求超时呢，人家累啦，先休息一会儿~'
-    } else if (!resData.data || resData.city !== city) {
+    } else if (!resData.data || resData.city != city) {
       text = '请输入正确的地址，不然臣妾也不知道哇Σ(*ﾟдﾟﾉ)ﾉ'
     } else {
       const todayWea = resData.data[0]
