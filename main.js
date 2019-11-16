@@ -1,9 +1,9 @@
+const fs = require('fs')
+const config = JSON.parse(fs.readFileSync('./config.json'))
 const { CQWebSocket } = require('cq-websocket')
-const bot = new CQWebSocket()
+const bot = new CQWebSocket(config.options || {})
 const scheduleJob = require('./src/js/schedule')
 const { groupReplyMsg } = require('./src/js/reply')
-const groupId = 623084193
-const userId = 857763476
 
 // ws链接监听
 bot
@@ -24,7 +24,7 @@ bot
       list.forEach(msg => {
         // 发送群推送
         bot('send_group_msg', {
-          group_id: groupId,
+          group_id: config.base.groupId,
           message: [msg]
         })
           .then(console.log)
