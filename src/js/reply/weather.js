@@ -25,6 +25,7 @@ const weatherMsg = {
   async getWeatherMsg (city) {
     const resData = await weather.getWeather(city)
     let text = ''
+    console.log({city, resData})
     // 地址不能带'市|区'
     if (isTimeout(resData)) {
       text = '请求超时呢，人家累啦，先休息一会儿~'
