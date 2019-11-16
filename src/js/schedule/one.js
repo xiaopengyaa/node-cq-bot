@@ -1,5 +1,6 @@
 const cheerio = require('cheerio')
 const { oneApi } = require('../../api')
+const { cqMsg } = require('../../utils')
 
 const one = {
   async getOneList() {
@@ -7,12 +8,7 @@ const one = {
     const $ = cheerio.load(data)
     const text = $('#carousel-one .fp-one-cita a').eq(0).text()
     console.log(text)
-    return [{
-      type: 'text',
-      data: {
-        text: `【每日一句】\r\n${text}`
-      }
-    }]
+    return [cqMsg(`【每日一句】\r\n${text}`)]
   }
 }
 

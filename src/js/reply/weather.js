@@ -1,6 +1,6 @@
 const moment = require('moment')
 const { weather } = require('../../api')
-const { random, isTimeout } = require('../../utils')
+const { random, isTimeout, cqMsg } = require('../../utils')
 
 const weekType = {
   '0': '星期日',
@@ -12,7 +12,7 @@ const weekType = {
   '6': '星期六',
 }
 const thanksWords = [
-  '【此天气预报由帅帅的群主独家冠名赞助】',
+  '【此天气预报由帅帅哒的群主独家冠名赞助】',
   '【感谢不懈追求完美的群主对本天气预报的大力支持】',
   '【此天气预报由温文尔雅、博学多才的群主顶力支持】',
   '【特别感谢低调、稳重、潇洒、豁达的群主对本天气预报的独家冠名赞助】',
@@ -22,7 +22,8 @@ const thanksWords = [
 ]
 
 const weatherMsg = {
-  async getWeatherMsg (city) {
+  rule: /^\[CQ:at,qq=\d+\]([\s\S]*)天气$/,
+  async message (city) {
     const resData = await weather.getWeather(city)
     let text = ''
     console.log({city, resData})
@@ -37,10 +38,7 @@ const weatherMsg = {
       const randomWordsIdx = random(0, thanksWords.length - 1)
       text = `${resData.city}：${moment().format('MM月DD日')} ${weekType[moment().day()]}，${todayWea.wea}，白天气温${todayWea.tem1}，晚上气温${todayWea.tem2}，${idx === 1 ? '运动指数' : todayWea.index[idx].title}：${todayWea.index[idx].desc}${thanksWords[randomWordsIdx]}`
     }
-    return {
-      type: 'text',
-      data: { text }
-    }
+    return cqMsg(text)
   }
 }
 module.exports = weatherMsg

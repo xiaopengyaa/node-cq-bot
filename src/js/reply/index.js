@@ -1,12 +1,11 @@
-const { getWeatherMsg } = require('./weather')
+const weatherMsg = require('./weather')
+const chatMsg = require('./chat')
 
 const list = {
-  // 群验证列表
+  // 群验证列表: [{ rule, message }]
   groupReplyList: [
-    {
-      rule: /^\[CQ:at,qq=\d+\]([\s\S]*)天气$/,
-      message: getWeatherMsg
-    }
+    weatherMsg,
+    ...chatMsg
   ]
 }
 
