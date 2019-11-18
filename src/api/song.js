@@ -1,15 +1,35 @@
+const qs = require('querystring')
 const puppeteerResolver = require('puppeteer-chromium-resolver')
-const { api } = require('../utils')
+const { api, getEncryptObj } = require('../utils')
 
 const url = {
   songList163(param, type = '1') {
     return `https://music.163.com/#/search/m/?s=${encodeURIComponent(param)}&${type}`
   },
+  song163: 'https://music.163.com/weapi/cloudsearch/get/web',
   songListQQ: 'https://c.y.qq.com/soso/fcgi-bin/search_for_qq_cp'
 }
 
 const song = {
-  // 网易云163歌曲
+  // 网易云163歌曲（api的方式）
+  async getSong163 (param = {}) {
+    const reqData = {
+      limit: '20',
+      offset: '0',
+      total: 'true',
+      type: '1',
+      ...param
+    }
+    const encryptData = getEncryptObj(reqData)
+    const config = {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    }
+    const res = await api.post(url.song163, qs.stringify(encryptData), config)
+    return res
+  },
+  // 网易云163歌曲（爬虫的方式）
   async getSongId163(param) {
     // 初始化puppeteer
     const revisionInfo = await puppeteerResolver({
@@ -46,7 +66,7 @@ const song = {
     return songId
   },
   // QQ音乐
-  async getSongListQQ(song) {
+  async getSongListQQ(param = {}) {
     const reqData = {
       g_tk: 5381,
       format: 'json',
@@ -55,7 +75,6 @@ const song = {
       notice: 0,
       platform: 'h5',
       needNewCode: 1,
-      w: song,
       zhidaqu: 1,
       catZhida: 1,
       t: 0,
@@ -66,7 +85,8 @@ const song = {
       perpage: 20,
       n: 20,
       p: 1,
-      remoteplace: 'txt.mqq.all'
+      remoteplace: 'txt.mqq.all',
+      ...param
     }
     const config = {
       headers: {

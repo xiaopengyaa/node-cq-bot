@@ -23,12 +23,14 @@ bot
     scheduleJob.start(list => {
       list.forEach(msg => {
         // 发送群推送
-        bot('send_group_msg', {
-          group_id: config.base.groupId,
-          message: [msg]
+        config.base.groupIdList.forEach(groupId => {
+          bot('send_group_msg', {
+            group_id: groupId,
+            message: [msg]
+          })
+            .then(console.log)
+            .catch(console.error)
         })
-          .then(console.log)
-          .catch(console.error)
       })
     })
   })
