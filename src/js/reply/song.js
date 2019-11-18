@@ -10,6 +10,7 @@ const songMsg = [
       const res = await song.getSong163({
         s: msg
       })
+      console.log('网易云点歌：', res)
       if (res.code === 200 && res.result.songCount > 0) {
         const songId = res.result.songs[0].id
         return {
@@ -45,7 +46,7 @@ const songMsg = [
   // },
   {
     name: 'song',
-    rule: /^\[CQ:at,qq=\d+\]\s*QQ点歌([\s\S]*)/,
+    rule: /^\[CQ:at,qq=\d+\]\s*[qQ]{2}点歌([\s\S]*)/,
     async message (msg) {
       if (!msg) return cqMsg('亲，请输入需要点歌的歌名')
       const res = await song.getSongListQQ({

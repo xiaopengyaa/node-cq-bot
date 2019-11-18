@@ -23,9 +23,12 @@ const song = {
     const encryptData = getEncryptObj(reqData)
     const config = {
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Referer': 'https://music.163.com/search/'
       }
     }
+    console.log('param:', param)
+    console.log('encrypt:', encryptData)
     const res = await api.post(url.song163, qs.stringify(encryptData), config)
     return res
   },
