@@ -22,6 +22,7 @@ const thanksWords = [
 ]
 
 const weatherMsg = {
+  name: 'weather',
   rule: /^\[CQ:at,qq=\d+\]([\s\S]*)天气$/,
   async message (city) {
     const resData = await weather.getWeather(city)

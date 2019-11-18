@@ -49,7 +49,7 @@ const api = {
         params: data,
         ...config
       })
-      console.log('api:', res.statusText)
+      console.log('api:', res.statusText || res.status)
       return new Promise(resolve => {
         resolve(res.data)
       })
@@ -65,7 +65,7 @@ const api = {
     try {
       console.log('api请求中...')
       const res = await axios.post(url, data, config)
-      console.log('api:', res.statusText)
+      console.log('api:', res.statusText || res.status)
       return new Promise(resolve => {
         resolve(res.data)
       })

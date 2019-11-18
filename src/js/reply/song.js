@@ -3,6 +3,7 @@ const { cqMsg } = require('../../utils')
 
 const songMsg = [
   {
+    name: 'song',
     rule: /^\[CQ:at,qq=\d+\]\s*点歌([\s\S]*)/,
     async message (msg) {
       if (!msg) return cqMsg('亲，请输入需要点歌的歌名')
@@ -24,6 +25,7 @@ const songMsg = [
     }
   },
   // {
+  //   name: 'song',
   //   rule: /^\[CQ:at,qq=\d+\]\s*点歌([\s\S]*)/,
   //   async message (msg) {
   //     if (!msg) return cqMsg('亲，请输入需要点歌的歌名')
@@ -42,6 +44,7 @@ const songMsg = [
   //   }
   // },
   {
+    name: 'song',
     rule: /^\[CQ:at,qq=\d+\]\s*QQ点歌([\s\S]*)/,
     async message (msg) {
       if (!msg) return cqMsg('亲，请输入需要点歌的歌名')

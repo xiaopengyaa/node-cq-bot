@@ -1,37 +1,36 @@
 const schedule = require('node-schedule')
-const { getNews } = require('./news')
+const { getNews } = require('./wzryNews')
 const { getOneList } = require('./one')
 
-// 定时任务名字
-const scheduleName = {
-  news: 'news',
-  one: 'one'
-}
 // 定时任务
-const scheduleObj = {
-  [scheduleName.news]: {
+const scheduleList = [
+  {
+    name: 'wzry',
     rule: '0 0 * * * *', // 1 time/h
     func: getNews
   },
-  [scheduleName.one]: {
+  {
+    name: 'one',
     rule: '0 0 8 * * *', // 每天早上8点
     func: getOneList
   }
-}
+]
 // 初始化定时任务
 const scheduleJob = {
-  start (cb) {
-    Object.entries(scheduleObj).forEach(item => {
-      const [name, job] = item
-      schedule.scheduleJob(name, job.rule, async () => {
-        const data = await job.func()
-        cb && cb(data)
+  start (app = {}, cb) {
+    scheduleList.forEach(item => {
+      // 判断是否有开启定时任务
+      app[item.name] && schedule.scheduleJob(item.name, item.rule, async () => {
+        if (typeof cb === 'function') {
+          const data = await item.func()
+          cb(data)
+        }
       })
     })
   },
-  cancel () {
-    Object.keys(scheduleName).forEach(name => {
-      schedule.cancelJob(name)
+  cancel (app = {}) {
+    scheduleList.forEach(item => {
+      app[item.name] && schedule.cancelJob(item.name)
     })
   }
 }

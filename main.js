@@ -15,22 +15,25 @@ bot
   .on('socket.close', () => {
     console.log('socket链接关闭')
     // 定时任务关闭
-    scheduleJob.cancel()
+    scheduleJob.cancel(config.application)
   })
   .on('ready', () => {
     console.log('你的小可爱上线啦ヽ(*´∀`)ﾉ')
     // 定时任务开始
-    scheduleJob.start(list => {
+    scheduleJob.start(config.application, list => {
       list.forEach(msg => {
         // 发送群推送
-        config.base.groupIdList.forEach(groupId => {
-          bot('send_group_msg', {
-            group_id: groupId,
-            message: [msg]
+        if (config.base && config.base.groupIdList) {
+          config.base.groupIdList.forEach(groupId => {
+            console.log(`群消息【${groupId}】推送中...`)
+            bot('send_group_msg', {
+              group_id: groupId,
+              message: [msg]
+            })
+              .then(console.log)
+              .catch(console.error)
           })
-            .then(console.log)
-            .catch(console.error)
-        })
+        }
       })
     })
   })
@@ -43,7 +46,7 @@ bot.on('message.private', async (e, context) => {
 bot.on('message.group.@.me', async (e, context) => {
   console.log('监听消息：', context)
   // 获取群验证回复消息
-  const list = await groupReplyMsg(context.message)
+  const list = await groupReplyMsg(config.application, context.message)
   console.log('list-msg:', list)
   if (list && list.length > 0) {
     list.forEach(msg => {

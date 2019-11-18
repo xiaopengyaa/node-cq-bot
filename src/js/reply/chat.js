@@ -3,7 +3,8 @@ const { cqMsg } = require('../../utils')
 // 自动聊天回复
 const chatMsg = [
   {
-    rule: /^\[CQ:at,qq=\d+\]功能$/,
+    name: 'chat',
+    rule: /^\[CQ:at,qq=\d+\]\s*功能$/,
     message () {
       const text = 
     `现有功能：
@@ -21,25 +22,29 @@ const chatMsg = [
     }
   },
   {
-    rule: /^\[CQ:at,qq=\d+\]101$/,
+    name: 'chat',
+    rule: /^\[CQ:at,qq=\d+\]\s*101$/,
     message () {
       return cqMsg('小迷弟会把王者荣耀每天最新的公告、活动、新英雄、新皮肤等资讯推送给大家哟。')
     }
   },
   {
-    rule: /^\[CQ:at,qq=\d+\]102$/,
+    name: 'chat',
+    rule: /^\[CQ:at,qq=\d+\]\s*102$/,
     message () {
       return cqMsg('@小迷弟 + 地方名即可查看当天的天气哟。PS：地方名不能带 “市” “区” 等字眼哟。')
     }
   },
   {
-    rule: /^\[CQ:at,qq=\d+\]103$/,
+    name: 'chat',
+    rule: /^\[CQ:at,qq=\d+\]\s*103$/,
     message () {
       return cqMsg('每天早上8点都会有一份鸡汤，让您精神满满，嘿嘿')
     }
   },
   {
-    rule: /^\[CQ:at,qq=\d+\]250$/,
+    name: 'chat',
+    rule: /^\[CQ:at,qq=\d+\]\s*250$/,
     message () {
       return cqMsg('亲，洗洗睡吧，没有更多功能了啦Σ(*ﾟдﾟﾉ)ﾉ')
     }

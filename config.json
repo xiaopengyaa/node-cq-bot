@@ -4,6 +4,16 @@
     "port": 6700
 	},
 	"base": {
-		"groupIdList": [623084193, 967361395]
+		"groupIdList": [
+			623084193, 
+			967361395
+		]
+	},
+	"application": {
+		"wzry": true,
+		"one": true,
+		"chat": true,
+		"song": true,
+		"weather": true
 	}
 }
