@@ -1,5 +1,7 @@
 const fs = require('fs')
+const moment = require('moment')
 const config = JSON.parse(fs.readFileSync('./config.json'))
+const announcement = JSON.parse(fs.readFileSync('./src/json/announcement.json'))
 const { CQWebSocket } = require('cq-websocket')
 const bot = new CQWebSocket(config.options || {})
 const scheduleJob = require('./src/js/schedule')
@@ -36,6 +38,30 @@ bot
         }
       })
     })
+    // 发送公告
+    const today = moment().format('YYYY-MM-DD')
+    if (announcement[today] && !announcement[today].release) {
+      const { title, content } = announcement[today]
+      const msg = `${title}\r\n\r\n${content}`
+      if (config.base && config.base.groupIdList) {
+        config.base.groupIdList.forEach(groupId => {
+          console.log(`群公告【${groupId}】推送中...`)
+          bot('send_group_msg', {
+            group_id: groupId,
+            message: msg
+          })
+            .then(res => {
+              console.log(res)
+              if (res.retcode === 0) {
+                // 更新状态
+                announcement[today].release = true
+                fs.writeFileSync('./src/json/announcement.json', JSON.stringify(announcement))
+              }
+            })
+            .catch(console.error)
+        })
+      }
+    }
   })
 
 // bot消息监听

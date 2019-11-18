@@ -6,7 +6,7 @@ const { getOneList } = require('./one')
 const scheduleList = [
   {
     name: 'wzry',
-    rule: '0 0 * * * *', // 1 time/h
+    rule: '0 */10 * * * *', // 每10分钟一次
     func: getNews
   },
   {

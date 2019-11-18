@@ -8,7 +8,7 @@ let newsObj = null
 
 // 读取已发送文章json
 try {
-  newsObj = JSON.parse(fs.readFileSync('./news.json'))
+  newsObj = JSON.parse(fs.readFileSync('./src/json/news.json'))
 } catch (e) {
   newsObj = {}
 }
@@ -43,7 +43,7 @@ function dealNews(news) {
         }
       })
       newsObj[item.iNewsId] = title
-      fs.writeFileSync('./news.json', JSON.stringify(newsObj))
+      fs.writeFileSync('./src/json/news.json', JSON.stringify(newsObj))
     }
   })
   return result
@@ -72,7 +72,7 @@ async function dealNewInfo() {
       }
     })
     newsObj[date] = `【王者荣耀爆料站】${title}`
-    fs.writeFileSync('./news.json', JSON.stringify(newsObj))
+    fs.writeFileSync('./src/json/news.json', JSON.stringify(newsObj))
   }
   return result
 }
