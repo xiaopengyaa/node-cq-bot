@@ -27,8 +27,6 @@ const song = {
         'Referer': 'https://music.163.com/search/'
       }
     }
-    console.log('param:', param)
-    console.log('encrypt:', encryptData)
     const res = await api.post(url.song163, qs.stringify(encryptData), config)
     return res
   },

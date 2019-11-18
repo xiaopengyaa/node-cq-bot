@@ -1,27 +1,38 @@
 const { song } = require('../../api')
-const { cqMsg } = require('../../utils')
+const { cqMsg, decrypMusic } = require('../../utils')
+
+const notFoundMsg = cqMsg('叮！歌曲搜索不到Σ(*ﾟдﾟﾉ)ﾉ')
+const tipsMsg = cqMsg('亲，请输入需要点歌的歌名')
 
 const songMsg = [
   {
     name: 'song',
     rule: /^\[CQ:at,qq=\d+\]\s*点歌([\s\S]*)/,
     async message (msg) {
-      if (!msg) return cqMsg('亲，请输入需要点歌的歌名')
+      if (!msg) return tipsMsg
       const res = await song.getSong163({
         s: msg
       })
-      console.log('网易云点歌：', res)
-      if (res.code === 200 && res.result.songCount > 0) {
-        const songId = res.result.songs[0].id
+      let data = null
+      if (res.code !== 200) return notFoundMsg
+      if (res.abroad) {
+        // 搜索url解密key为'fuck~#$%^&*(458'
+        const key = 'fuck~#$%^&*(458'
+        console.log('网易云abroad：', res.result)
+        data = JSON.parse(decodeURIComponent(decrypMusic(res.result, key)))
+      } else {
+        data = res.result
+      }
+      if (data.songCount > 0) {
         return {
           type: 'music',
           data: {
             type: '163',
-            id: songId
+            id: data.songs[0].id
           }
         }
       } else {
-        return cqMsg('叮！歌曲搜索不到Σ(*ﾟдﾟﾉ)ﾉ')
+        return notFoundMsg
       }
     }
   },
@@ -29,7 +40,7 @@ const songMsg = [
   //   name: 'song',
   //   rule: /^\[CQ:at,qq=\d+\]\s*点歌([\s\S]*)/,
   //   async message (msg) {
-  //     if (!msg) return cqMsg('亲，请输入需要点歌的歌名')
+  //     if (!msg) return tipsMsg
   //     const songId = await song.getSongId163(msg)
   //     if (songId) {
   //       return {
@@ -40,7 +51,7 @@ const songMsg = [
   //         }
   //       }
   //     } else {
-  //       return cqMsg('叮！歌曲搜索不到Σ(*ﾟдﾟﾉ)ﾉ')
+  //       return notFoundMsg
   //     }
   //   }
   // },
@@ -48,7 +59,7 @@ const songMsg = [
     name: 'song',
     rule: /^\[CQ:at,qq=\d+\]\s*[qQ]{2}点歌([\s\S]*)/,
     async message (msg) {
-      if (!msg) return cqMsg('亲，请输入需要点歌的歌名')
+      if (!msg) return tipsMsg
       const res = await song.getSongListQQ({
         w: msg
       })
@@ -62,7 +73,7 @@ const songMsg = [
           }
         }
       } else {
-        return cqMsg('叮！歌曲搜索不到Σ(*ﾟдﾟﾉ)ﾉ')
+        return notFoundMsg
       }
     }
   }
