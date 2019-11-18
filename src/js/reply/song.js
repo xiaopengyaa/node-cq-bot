@@ -18,7 +18,6 @@ const songMsg = [
       if (res.abroad) {
         // 搜索url解密key为'fuck~#$%^&*(458'
         const key = 'fuck~#$%^&*(458'
-        console.log('网易云abroad：', res.result)
         data = JSON.parse(decodeURIComponent(decrypMusic(res.result, key)))
       } else {
         data = res.result
