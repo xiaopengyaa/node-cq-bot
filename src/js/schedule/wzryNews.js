@@ -2,6 +2,7 @@ const moment = require('moment')
 const fs = require('fs')
 const cheerio = require('cheerio')
 const { wzry } = require('../../api')
+const { cqMsg } = require('../../utils')
 
 const image = 'http://qpic.cn/lwp36hZly' // 群主推送image
 let newsObj = null
@@ -20,6 +21,34 @@ const news = {
     const newsList = dealNews(announcementList.concat(activityList)) // 定时消息list
     const newInfoList = await dealNewInfo() // 定时消息list
     return newsList.concat(newInfoList)
+  },
+  // 获取当天比赛信息
+  async getMatch () {
+    const today = moment().format('YYYY-MM-DD')
+    const begin_time = Date.parse(today) / 1000
+    const end_time = Date.parse(moment().add(1, 'days').format('YYYY-MM-DD')) / 1000
+    const season = moment().format('MM') > 6 ? 'S2' : 'S1'
+    const seasonid = `KPL${moment().format('YYYY')}${season}`
+    const matchList = await wzry.getWzryMatch({
+      begin_time,
+      end_time,
+      seasonid
+    })
+    let result = []
+    let title = ''
+    let content = ''
+    let index = 0
+    matchList.forEach(item => {
+      title = `今日份【${item.season}】比赛信息`
+      if (today === moment(item.match_time).format('YYYY-MM-DD')) {
+        index++
+        content += `${index}、${item.hname} vs ${item.gname}\r\n 比赛时间：${moment(item.match_time).format('MM月DD日 HH:mm')}\r\n\r\n`
+      }
+    })
+    if (content) {
+      result.push(cqMsg(`${title}\r\n\r\n${content}有兴趣的到时可以去看看哈`))
+    }
+    return result
   }
 }
 
