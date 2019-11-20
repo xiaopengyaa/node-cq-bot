@@ -27,14 +27,13 @@ bot
       list.forEach(msg => {
         // 发送群推送
         if (config.base && config.base.groupIdList) {
-          config.base.groupIdList.forEach(groupId => {
+          config.base.groupIdList.forEach(async groupId => {
             console.log(`群消息【${groupId}】推送中...`)
-            bot('send_group_msg', {
+            const res = await bot('send_group_msg', {
               group_id: groupId,
               message: msg
             })
-              .then(console.log)
-              .catch(console.error)
+            console.log(`群消息【${groupId}】推送结果：`, res)
           })
         }
       })
@@ -45,21 +44,18 @@ bot
       const { title, content } = announcement[today]
       const msg = `${title}\r\n\r\n${content}`
       if (config.base && config.base.groupIdList) {
-        config.base.groupIdList.forEach(groupId => {
+        config.base.groupIdList.forEach(async groupId => {
           console.log(`群公告【${groupId}】推送中...`)
-          bot('send_group_msg', {
+          const res= await bot('send_group_msg', {
             group_id: groupId,
             message: msg
           })
-            .then(res => {
-              console.log(res)
-              if (res.retcode === 0) {
-                // 更新状态
-                announcement[today].release = true
-                fs.writeFileSync('./src/json/announcement.json', JSON.stringify(announcement))
-              }
-            })
-            .catch(console.error)
+          console.log(`群公告【${groupId}】推送结果：`, res)
+          if (res.retcode === 0) {
+            // 更新状态
+            announcement[today].release = true
+            fs.writeFileSync('./src/json/announcement.json', JSON.stringify(announcement))
+          }
         })
       }
     }
@@ -76,15 +72,20 @@ bot.on('message.group.@.me', async (e, context) => {
   const list = await groupReplyMsg(config.application, context)
   console.log('list-msg:', list)
   if (list && list.length > 0) {
-    list.forEach(msg => {
+    list.forEach(async msg => {
       // 发送群推送
       console.log('群回复ing...')
-      bot('send_group_msg', {
+      const res = await bot('send_group_msg', {
         group_id: context.group_id,
         message: msg
       })
-        .then(console.log)
-        .catch(console.error)
+      console.log('群回复结果：', res)
+      if (res.retcode !== 0) {
+        bot('send_group_msg', {
+          group_id: context.group_id,
+          message: '请求失败啦Σ(*ﾟдﾟﾉ)ﾉ'
+        })
+      }
     })
   } else {
     const msgArr = config.base.randomReplyMsg || ['@我干嘛呀Σ(*ﾟдﾟﾉ)ﾉ']
