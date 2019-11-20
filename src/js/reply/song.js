@@ -1,8 +1,8 @@
 const { song } = require('../../api')
-const { cqMsg, decrypMusic } = require('../../utils')
+const { decrypMusic } = require('../../utils')
 
-const notFoundMsg = cqMsg('叮！歌曲搜索不到Σ(*ﾟдﾟﾉ)ﾉ')
-const tipsMsg = cqMsg('亲，请输入需要点歌的歌名')
+const notFoundMsg = '叮！歌曲搜索不到Σ(*ﾟдﾟﾉ)ﾉ'
+const tipsMsg = '亲，请输入需要点歌的歌名'
 
 const songMsg = [
   {
@@ -22,36 +22,16 @@ const songMsg = [
       } else {
         data = res.result
       }
-      if (data.songCount > 0) {
-        return {
-          type: 'music',
-          data: {
-            type: '163',
-            id: data.songs[0].id
-          }
-        }
-      } else {
-        return notFoundMsg
-      }
+      return data.songCount > 0 ? `[CQ:music,id=${data.songs[0].id},type=163]` : notFoundMsg
     }
   },
   // {
   //   name: 'song',
-  //   rule: /^\[CQ:at,qq=\d+\]\s*点歌([\s\S]*)/,
+  //   rule: /^\[CQ:at,qq=\d+\]\s*网易云点歌([\s\S]*)/,
   //   async message (msg) {
   //     if (!msg) return tipsMsg
   //     const songId = await song.getSongId163(msg)
-  //     if (songId) {
-  //       return {
-  //         type: 'music',
-  //         data: {
-  //           type: '163',
-  //           id: songId
-  //         }
-  //       }
-  //     } else {
-  //       return notFoundMsg
-  //     }
+  //     return songId ? `[CQ:music,id=${songId},type=163]` : notFoundMsg
   //   }
   // },
   {
@@ -63,17 +43,7 @@ const songMsg = [
         w: msg
       })
       const list = res.code === 0 && res.data.song.list || []
-      if (list && list.length > 0) {
-        return {
-          type: 'music',
-          data: {
-            type: 'qq',
-            id: list[0].songid
-          }
-        }
-      } else {
-        return notFoundMsg
-      }
+      return list && list.length > 0 ? `[CQ:music,id=${list[0].songid},type=qq]` : notFoundMsg
     }
   }
 ]

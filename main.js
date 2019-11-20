@@ -72,7 +72,7 @@ bot.on('message.private', async (e, context) => {
 bot.on('message.group.@.me', async (e, context) => {
   console.log('监听消息：', context)
   // 获取群验证回复消息
-  const list = await groupReplyMsg(config.application, context.message)
+  const list = await groupReplyMsg(config.application, context)
   console.log('list-msg:', list)
   if (list && list.length > 0) {
     list.forEach(msg => {
@@ -80,13 +80,13 @@ bot.on('message.group.@.me', async (e, context) => {
       console.log('群回复ing...')
       bot('send_group_msg', {
         group_id: context.group_id,
-        message: [msg]
+        message: msg
       })
         .then(console.log)
         .catch(console.error)
     })
   } else {
-    return ['@我干嘛呀Σ(*ﾟдﾟﾉ)ﾉ']
+    return '@我干嘛呀Σ(*ﾟдﾟﾉ)ﾉ'
   }
 })
 
