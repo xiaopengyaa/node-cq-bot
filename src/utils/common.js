@@ -6,16 +6,6 @@ const common = {
   // 是否超时
   isTimeout (err) {
     return err.code === 'ECONNABORTED' && err.message.includes('timeout')
-  },
-  // CQ消息
-  cqMsg (text, type = 'text', options = {}) {
-    return {
-      type,
-      data: {
-        text,
-        ...options
-      }
-    }
   }
 }
 

@@ -1,6 +1,6 @@
 const moment = require('moment')
 const { weather } = require('../../api')
-const { random, isTimeout, cqMsg } = require('../../utils')
+const { random, isTimeout } = require('../../utils')
 
 const weekType = {
   '0': '星期日',

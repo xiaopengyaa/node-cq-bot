@@ -6,6 +6,7 @@ const { CQWebSocket } = require('cq-websocket')
 const bot = new CQWebSocket(config.options || {})
 const scheduleJob = require('./src/js/schedule')
 const { groupReplyMsg } = require('./src/js/reply')
+const { random } = require('./src/utils')
 
 // ws链接监听
 bot
@@ -30,7 +31,7 @@ bot
             console.log(`群消息【${groupId}】推送中...`)
             bot('send_group_msg', {
               group_id: groupId,
-              message: [msg]
+              message: msg
             })
               .then(console.log)
               .catch(console.error)
@@ -86,7 +87,8 @@ bot.on('message.group.@.me', async (e, context) => {
         .catch(console.error)
     })
   } else {
-    return '@我干嘛呀Σ(*ﾟдﾟﾉ)ﾉ'
+    const msgArr = config.base.randomReplyMsg || ['@我干嘛呀Σ(*ﾟдﾟﾉ)ﾉ']
+    return msgArr[random(0, msgArr.length - 1)]
   }
 })
 

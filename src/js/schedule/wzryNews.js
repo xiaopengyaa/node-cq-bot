@@ -2,7 +2,6 @@ const moment = require('moment')
 const fs = require('fs')
 const cheerio = require('cheerio')
 const { wzry } = require('../../api')
-const { cqMsg } = require('../../utils')
 
 const image = 'http://qpic.cn/lwp36hZly' // 群主推送image
 let newsObj = null
@@ -15,6 +14,7 @@ try {
 }
 
 const news = {
+  // 获取公告、活动、爆料站信息
   async getNews() {
     const announcementList = await wzry.getWzryNews({ id: 1762 }) // 获取公告list
     const activityList = await wzry.getWzryNews({ id: 1763 }) // 获取活动list
@@ -46,7 +46,7 @@ const news = {
       }
     })
     if (content) {
-      result.push(cqMsg(`${title}\r\n\r\n${content}有兴趣的到时可以去看看哈`))
+      result.push(`${title}\r\n\r\n${content}有兴趣的到时可以去看看哈[CQ:face,id=13]`)
     }
     return result
   }
@@ -62,7 +62,7 @@ function dealNews(news) {
     if (diff <= 1 && !newsObj[item.iNewsId]) {
       const title = `【${item.sAuthor}】${item.sTitle}`
       const url = baseUrl + item.iNewsId
-      result.push({
+      result.push([{
         type: 'share',
         data: {
           url,
@@ -70,7 +70,7 @@ function dealNews(news) {
           content: item.sTitle,
           image
         }
-      })
+      }])
       newsObj[item.iNewsId] = title
       fs.writeFileSync('./src/json/news.json', JSON.stringify(newsObj))
     }
@@ -91,7 +91,7 @@ async function dealNewInfo() {
   let result = []
   // 判断1天内的文章是否已发
   if (diff <= 1 && !newsObj[date]) {
-    result.push({
+    result.push([{
       type: 'share',
       data: {
         url,
@@ -99,7 +99,7 @@ async function dealNewInfo() {
         content: `【${label}】${title}`,
         image
       }
-    })
+    }])
     newsObj[date] = `【王者荣耀爆料站】${title}`
     fs.writeFileSync('./src/json/news.json', JSON.stringify(newsObj))
   }
