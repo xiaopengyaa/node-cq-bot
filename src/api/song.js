@@ -7,6 +7,7 @@ const url = {
     return `https://music.163.com/#/search/m/?s=${encodeURIComponent(param)}&${type}`
   },
   song163: 'https://music.163.com/weapi/cloudsearch/get/web',
+  songSort163: 'https://music.163.com/discover/toplist',
   songListQQ: 'https://c.y.qq.com/soso/fcgi-bin/search_for_qq_cp'
 }
 
@@ -66,6 +67,34 @@ const song = {
     await browser.close()
     return songId
   },
+  // 网易云歌曲排行榜歌曲
+  async getRankList163 (param) {
+    const html = await api.get(url.songSort163, param)
+    const reg = /<li><a href="\/song\?id=(\d+)">([^<]+)<\/a><\/li>/g // 获取排行榜歌曲id和名字
+    let songIdList = []
+    let match = null
+    while((match = reg.exec(html)) !== null) {
+      songIdList.push({
+        id: match[1],
+        name: match[2]
+      })
+    }
+    return songIdList
+  },
+  // 网易云歌曲排行榜类型
+  async getRankType163 () {
+    const html = await api.get(url.songSort163)
+    const reg = /<a href="\/discover\/toplist\?id=(\d+)" class="s-fc0">([^<]+)<\/a>/g // 获取排行榜类型
+    let rankTypeList = []
+    let match = null
+    while((match = reg.exec(html)) !== null) {
+      rankTypeList.push({
+        id: match[1],
+        name: match[2]
+      })
+    }
+    return rankTypeList
+  },
   // QQ音乐
   async getSongListQQ(param = {}) {
     const reqData = {
@@ -98,5 +127,5 @@ const song = {
     return res
   }
 }
-
+song.getRankType163()
 module.exports = song

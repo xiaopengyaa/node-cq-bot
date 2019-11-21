@@ -13,9 +13,11 @@ const chatMsg = [
 
       【103】每日一句
 
-      【104】点歌
+      【104】听音乐
 
       【105】帮@所有人
+
+      【106】每日笑话
 
       【250】查看更多功能
 
@@ -48,7 +50,13 @@ const chatMsg = [
     name: 'chat',
     rule: /^\[CQ:at,qq=\d+\]\s*104$/,
     message () {
-      return '【点歌】@小迷弟+“点歌”+歌名即可点歌'
+      return `【听音乐】
+      
+      1、@小迷弟+“点歌”+歌名即可点歌
+
+      2、@小迷弟+“排行榜”即可查看排行榜类型
+      
+      3、@小迷弟+“排行榜”+排行榜类型即可查看榜单歌曲（PS：排行榜类型支持模糊匹配）`
     }
   },
   {
@@ -56,6 +64,13 @@ const chatMsg = [
     rule: /^\[CQ:at,qq=\d+\]\s*105$/,
     message () {
       return '【帮@所有人】@小迷弟+“@所有人”即可帮你@全部成员啦'
+    }
+  },
+  {
+    name: 'chat',
+    rule: /^\[CQ:at,qq=\d+\]\s*106$/,
+    message () {
+      return '【每日笑话】@小迷弟+“笑话”就有笑话看啦'
     }
   },
   {
@@ -69,7 +84,7 @@ const chatMsg = [
     name: 'chat',
     rule: /^\[CQ:at,qq=\d+\]\s*@\s?所有人$/,
     message (msg, context) {
-      return `[CQ:at,qq=all] 叮咚！${context.sender.nickname}有事找你们，看到请回一下呢。`
+      return `[CQ:at,qq=all] ${context.sender.nickname}有事找你们，看到请回一下呢。[CQ:face,id=212]`
     }
   }
 ]

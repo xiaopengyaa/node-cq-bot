@@ -24,7 +24,7 @@ const reply = {
         const matchInfo = RegExp.$1.trim()
         console.log('匹配信息:', matchInfo)
         const message = await item.message(matchInfo, context)
-        result.push(message)
+        message && result.push(message)
       }
     }
     return result
