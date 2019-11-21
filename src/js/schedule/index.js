@@ -16,7 +16,7 @@ const scheduleList = [
   },
   {
     name: 'match',
-    rule: '0 0 12 * * * *', // 每天中午12点
+    rule: '0 0 12 * * *', // 每天中午12点
     func: getMatch
   }
 ]

@@ -1,13 +1,15 @@
 const weatherMsg = require('./weather')
 const chatMsg = require('./chat')
 const songMsg = require('./song')
+const jokeMsg = require('./joke')
 
 const list = {
   // 群验证列表: [{ rule, message }]
   groupReplyList: [
     weatherMsg,
     ...chatMsg,
-    ...songMsg
+    ...songMsg,
+    ...jokeMsg
   ]
 }
 
