@@ -46,4 +46,4 @@ async function getJoke (url) {
     fs.writeFileSync(path.join(__dirname, '../json/joke.json'), JSON.stringify(jokeObj))
   }
 }
-getJoke(encodeURI(baseUrl + url))
+// getJoke(encodeURI(baseUrl + url))

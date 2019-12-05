@@ -1,4 +1,3 @@
-const schedule = require('node-schedule')
 const { getNews, getMatch } = require('./wzryNews')
 const { getOneList } = require('./one')
 
@@ -20,24 +19,5 @@ const scheduleList = [
     func: getMatch
   }
 ]
-// 初始化定时任务
-const scheduleJob = {
-  start (app = {}, cb) {
-    scheduleList.forEach(item => {
-      // 判断是否有开启定时任务
-      app[item.name] && schedule.scheduleJob(item.name, item.rule, async () => {
-        if (typeof cb === 'function') {
-          const data = await item.func()
-          cb(data)
-        }
-      })
-    })
-  },
-  cancel (app = {}) {
-    scheduleList.forEach(item => {
-      app[item.name] && schedule.cancelJob(item.name)
-    })
-  }
-}
 
-module.exports = scheduleJob
+module.exports = scheduleList

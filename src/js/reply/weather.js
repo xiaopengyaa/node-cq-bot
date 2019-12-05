@@ -37,7 +37,7 @@ const weatherMsg = {
       const todayWea = resData.data[0]
       const idx = random(0, todayWea.index.length - 1) // 随机指数
       const randomWordsIdx = random(0, thanksWords.length - 1)
-      text = `${resData.city}：${moment().format('MM月DD日')} ${weekType[moment().day()]}，${todayWea.wea}，白天气温${todayWea.tem1}，晚上气温${todayWea.tem2}，${idx === 1 ? '运动指数' : todayWea.index[idx].title}：${todayWea.index[idx].desc}${thanksWords[randomWordsIdx]}`
+      text = `${resData.city}：${todayWea.wea}，湿度${todayWea.humidity}%，当前温度${todayWea.tem}，白天温度${todayWea.tem1}，晚上温度${todayWea.tem2}，风速：${todayWea.win_speed}，${idx === 1 ? '运动指数' : todayWea.index[idx].title}：${todayWea.index[idx].desc}更新时间：${moment(resData.update_time).format('MM月DD日HH时mm分')}${thanksWords[randomWordsIdx]}`
     }
     return text
   }

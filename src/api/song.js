@@ -127,5 +127,5 @@ const song = {
     return res
   }
 }
-song.getRankType163()
+
 module.exports = song
