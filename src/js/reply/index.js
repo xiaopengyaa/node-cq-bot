@@ -3,6 +3,7 @@ const chatMsg = require('./chat')
 const songMsg = require('./song')
 const jokeMsg = require('./joke')
 const ticketMsg = require('./ticket')
+const constellationMsg = require('./constellation')
 
 const list = {
   // 群验证列表: [{ rule, message }]
@@ -11,7 +12,8 @@ const list = {
     ...chatMsg,
     ...songMsg,
     ...jokeMsg,
-    ...ticketMsg
+    ...ticketMsg,
+    ...constellationMsg
   ]
 }
 
