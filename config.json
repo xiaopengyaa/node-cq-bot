@@ -23,6 +23,7 @@
 		"song": true,
 		"weather": true,
 		"match": true,
-		"joke": true
+		"joke": true,
+		"ticket": true
 	}
 }

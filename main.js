@@ -3,10 +3,12 @@ const moment = require('moment')
 const config = JSON.parse(fs.readFileSync('./config.json'))
 const announcement = JSON.parse(fs.readFileSync('./src/json/announcement.json'))
 const { CQWebSocket } = require('cq-websocket')
-const bot = new CQWebSocket(config.options || {})
 const scheduleList = require('./src/js/schedule')
 const { groupReplyMsg } = require('./src/js/reply')
 const { random, scheduleJob } = require('./src/utils')
+
+// 全局引用bot
+bot = new CQWebSocket(config.options || {})
 
 // ws链接监听
 bot
@@ -18,12 +20,12 @@ bot
   .on('socket.close', () => {
     console.log('socket链接关闭')
     // 定时任务关闭
-    scheduleJob.cancel(config.application, scheduleList)
+    scheduleJob.cancelAll(config.application, scheduleList)
   })
   .on('ready', () => {
     console.log('你的小可爱上线啦ヽ(*´∀`)ﾉ')
     // 定时任务开始
-    scheduleJob.start(config.application, scheduleList, list => {
+    scheduleJob.startAll(config.application, scheduleList, list => {
       list.forEach(msg => {
         // 发送群推送
         if (config.base && config.base.groupIdList) {
