@@ -4,24 +4,16 @@ const { api } = require('../utils')
 const url = {
   wzryNews: 'https://apps.game.qq.com/wmp/v3.1/',
   wzryNewInfo: 'https://pvp.qq.com/m/m201706/coming/index.htm',
-  wzryMatch: 'https://app.tga.qq.com/openapi/tgabank/getSchedules'
+  wzryMatch (num) {
+    return `https://itea-cdn.qq.com/file/ingame/smoba/allMatchpage${num}.json`
+  }
 }
 
 const wzry = {
   // 王者荣耀比赛信息
-  async getWzryMatch(extraData = {}) {
-    const reqData = {
-      appid: 10005,
-      sign: 'K8tjxlHDt7HHFSJTlxxZW4A%2BalA%3D',
-      ...extraData
-    }
-    const config = {
-      headers: {
-        Referer: 'https://pvp.qq.com/match/kpl/index.shtml'
-      }
-    }
-    const res = await api.get(url.wzryMatch, reqData, config)
-    return res && res.result === 0 ? res.data : []
+  async getWzryMatch(num) {
+    const res = await api.get(url.wzryMatch(num))
+    return res && res.matchList || []
   },
   // 王者荣耀文章 id: 1762为公告|1763为活动
   async getWzryNews(extraData = {}) {

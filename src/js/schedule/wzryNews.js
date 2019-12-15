@@ -24,34 +24,22 @@ const news = {
   },
   // 获取当天比赛信息
   async getMatch () {
-    const today = moment().format('YYYY-MM-DD')
-    const begin_time = Date.parse(today) / 1000
-    const end_time = Date.parse(moment().add(1, 'days').format('YYYY-MM-DD')) / 1000
-    const season = moment().format('MM') > 6 ? 'S2' : 'S1'
-    const seasonid = `KPL${moment().format('YYYY')}${season}`
-    const matchList = await wzry.getWzryMatch({
-      begin_time,
-      end_time,
-      seasonid
-    })
+    const today = moment().format('YYYYMMDD')
+    const matchList = await wzry.getWzryMatch(1)
     let result = []
     let title = ''
     let content = ''
-    let index = 0
     matchList.forEach(item => {
-      title = `今日份【${item.season}】比赛信息`
-      if (today === moment(item.match_time).format('YYYY-MM-DD')) {
-        index++
-        content += `${index}、${item.hname} vs ${item.gname}\r\n 比赛时间：${moment(item.match_time).format('MM月DD日 HH:mm')}\r\n\r\n`
-      }
+      if (Number(today) !== item.date) return
+      title = `今日份【${item.match_name}-${item.cate}】比赛信息`
+      item.match && item.match.forEach((match, matchIdx) => {
+        content += `${matchIdx + 1}、${match.teama_name} vs ${match.teamb_name}\r\n 比赛时间：${moment(match.mtime).format('MM月DD日 HH:mm')}\r\n\r\n`
+      })
     })
-    if (content) {
-      result.push(`${title}\r\n\r\n${content}有兴趣的到时可以去看看哈[CQ:face,id=13]`)
-    }
+    content && result.push(`${title}\r\n\r\n${content}有兴趣的到时可以去看看哈[CQ:face,id=13]`)
     return result
   }
 }
-
 // 处理公告、活动数据
 function dealNews(news) {
   const baseUrl = 'https://pvp.qq.com/m/m201606/newCont.shtml?newCont.shtml?G_Biz=18&tid='
