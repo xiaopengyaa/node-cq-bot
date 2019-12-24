@@ -22,6 +22,8 @@ const chatMsg = [
 
 【108】每日星座运势
 
+【109】给头像戴上圣诞帽
+
 【250】查看更多功能
 
 @小迷弟+编号可以获取功能详情`
@@ -112,6 +114,13 @@ const chatMsg = [
   },
   {
     name: 'chat',
+    rule: /^\[CQ:at,qq=\d+\]\s*109$/,
+    message () {
+      return '【给头像戴上圣诞帽】@小迷弟+“圣诞帽”即可戴上圣诞帽啦'
+    }
+  },
+  {
+    name: 'chat',
     rule: /^\[CQ:at,qq=\d+\]\s*250$/,
     message () {
       return '亲，洗洗睡吧，没有更多功能了啦Σ(*ﾟдﾟﾉ)ﾉ'
@@ -122,6 +131,13 @@ const chatMsg = [
     rule: /^\[CQ:at,qq=\d+\]\s*@\s?所有人$/,
     message (msg, context) {
       return `[CQ:at,qq=all] ${context.sender.nickname}有事找你们，看到请回一下呢。[CQ:face,id=212]`
+    }
+  },
+  {
+    name: 'chat',
+    rule: /^\[CQ:at,qq=\d+\]\s*圣诞帽$/,
+    message () {
+      return `[CQ:share,url=http://111.230.244.116:8080/index.html,title=给头像戴上圣诞帽,content=快点我快点我快点我！]`
     }
   }
 ]
