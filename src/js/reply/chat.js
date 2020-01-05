@@ -24,6 +24,8 @@ const chatMsg = [
 
 【109】给头像戴上圣诞帽
 
+【110】消息回看
+
 【250】查看更多功能
 
 @小迷弟+编号可以获取功能详情`
@@ -116,7 +118,24 @@ const chatMsg = [
     name: 'chat',
     rule: /^\[CQ:at,qq=\d+\]\s*109$/,
     message () {
-      return '【给头像戴上圣诞帽】@小迷弟+“圣诞帽”即可戴上圣诞帽啦（暂只支持1:1的头像图片）'
+      return '【给头像戴上圣诞帽】@小迷弟+“圣诞帽”即可戴上圣诞帽啦'
+    }
+  },
+  {
+    name: 'chat',
+    rule: /^\[CQ:at,qq=\d+\]\s*110$/,
+    message () {
+      return `【消息回看】
+
+1、@小迷弟+“消息回看”+qq号+消息序号即可回看消息
+
+2、qq号：必填，支持模糊填写，可以不用填写完整qq号哟
+
+3、消息序号：非必填，不填则默认为1，表示回看所填qq号的最新一条消息
+
+4、qq号和消息序号需以空格隔开
+
+5、此功能暂时为群主专属功能`
     }
   },
   {
@@ -130,14 +149,26 @@ const chatMsg = [
     name: 'chat',
     rule: /^\[CQ:at,qq=\d+\]\s*@\s?所有人$/,
     message (msg, context) {
-      return `[CQ:at,qq=all] ${context.sender.nickname}有事找你们，看到请回一下呢。[CQ:face,id=212]`
+      const name = context.sender.card || context.sender.nickname
+      return `[CQ:at,qq=all] ${name}有事找你们，看到请回一下呢。[CQ:face,id=212]`
     }
   },
   {
     name: 'chat',
     rule: /^\[CQ:at,qq=\d+\]\s*圣诞帽$/,
-    message () {
-      return `[CQ:share,url=http://111.230.244.116:8080/index.html,title=给头像戴上圣诞帽,content=快点我快点我快点我！]`
+    message (msg, context) {
+      const qq = context.sender.user_id
+      const avatar = `http://q.qlogo.cn/headimg_dl?dst_uin=${qq}&spec=640`
+      const message = [{
+        type: 'share',
+        data: {
+          url: `http://111.230.244.116:8080/avatar?qq=${qq}`,
+          title: '给头像戴上圣诞帽',
+          content: '快点我快点我快点我~',
+          image: avatar
+        }
+      }]
+      return message
     }
   }
 ]

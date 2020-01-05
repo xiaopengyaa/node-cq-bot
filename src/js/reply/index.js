@@ -4,6 +4,7 @@ const songMsg = require('./song')
 const jokeMsg = require('./joke')
 const ticketMsg = require('./ticket')
 const constellationMsg = require('./constellation')
+const lookBackMsg = require('./msgLookBack')
 
 const list = {
   // 群验证列表: [{ rule, message }]
@@ -13,7 +14,8 @@ const list = {
     ...songMsg,
     ...jokeMsg,
     ...ticketMsg,
-    ...constellationMsg
+    ...constellationMsg,
+    ...lookBackMsg
   ]
 }
 

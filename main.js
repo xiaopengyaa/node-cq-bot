@@ -1,14 +1,16 @@
 const fs = require('fs')
 const moment = require('moment')
-const config = JSON.parse(fs.readFileSync('./config.json'))
+
 const announcement = JSON.parse(fs.readFileSync('./src/json/announcement.json'))
+config = JSON.parse(fs.readFileSync('./config.json')) // 全局引用config
+
 const { CQWebSocket } = require('cq-websocket')
+bot = new CQWebSocket(config.options || {}) // 全局引用bot
+
 const scheduleList = require('./src/js/schedule')
 const { groupReplyMsg } = require('./src/js/reply')
 const { random, scheduleJob } = require('./src/utils')
 
-// 全局引用bot
-bot = new CQWebSocket(config.options || {})
 
 // ws链接监听
 bot

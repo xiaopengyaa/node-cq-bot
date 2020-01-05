@@ -8,6 +8,8 @@
 			623084193, 
 			967361395
 		],
+		"dataPath": "/root/coolq",
+		"localDataPath": "D:\\下载\\CQP\\酷Q Pro",
 		"randomReplyMsg": [
 			"@我干嘛呀Σ(*ﾟдﾟﾉ)ﾉ",
 			"你好，我是人见人爱、花见花开、啤酒看到都会自动打开盖的群主的小迷弟[CQ:face,id=6]",
@@ -25,6 +27,7 @@
 		"match": true,
 		"joke": true,
 		"ticket": true,
-		"constellation": true
+		"constellation": true,
+		"msgLookBack": true
 	}
 }
