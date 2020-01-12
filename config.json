@@ -28,6 +28,6 @@
 		"joke": true,
 		"ticket": true,
 		"constellation": true,
-		"msgLookBack": true
+		"msgLookBack": false
 	}
 }

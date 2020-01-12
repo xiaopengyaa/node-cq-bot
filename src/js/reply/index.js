@@ -5,6 +5,7 @@ const jokeMsg = require('./joke')
 const ticketMsg = require('./ticket')
 const constellationMsg = require('./constellation')
 const lookBackMsg = require('./msgLookBack')
+const wzryMsg = require('./wzry')
 
 const list = {
   // 群验证列表: [{ rule, message }]
@@ -15,7 +16,8 @@ const list = {
     ...jokeMsg,
     ...ticketMsg,
     ...constellationMsg,
-    ...lookBackMsg
+    ...lookBackMsg,
+    ...wzryMsg
   ]
 }
 

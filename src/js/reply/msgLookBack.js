@@ -18,6 +18,7 @@ const lookBackMsg = [
         const reg = /^群:\s(\d+)\s帐号:\s(\d+)\s[\r\n]*([\s\S]*)/
         let [searchQQ, count = 1] = msg.split(' ')
         let searchTime = ''
+        let targetName = ''
         // 查找对应消息
         for (let i = 0; i < list.length; i++) {
           const item = list[i]
@@ -28,12 +29,18 @@ const lookBackMsg = [
           }
           if (count === 0) {
             text = message
+            const res = await bot('get_group_member_info', {
+              group_id: groupId,
+              user_id: targetQQ
+            })
+            res.retcode === 0 && (targetName = res.data.card || res.data.nickname)
+            console.log('targetName:', targetName)
             searchTime = item.time.toString().padEnd(13, '0') // 时间补全
             break
           }
         }
         if (text) {
-          const title = `${context.sender.nickname} ${moment(Number(searchTime)).format('MM月DD日 HH:mm')}`
+          const title = `${targetName} ${moment(Number(searchTime)).format('MM月DD日 HH:mm')}`
           // const messageType = ['CQ:music', 'CQ:share', 'CQ:rich']
           text = `${title}\r\n--------------------\r\n${text}`
         } else {
